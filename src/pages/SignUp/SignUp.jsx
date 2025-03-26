@@ -20,18 +20,36 @@ const SignUp = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
-        alert("create user successfully done");
         const userInf = {
           displayName: data.name,
         };
         updateUser(userInf)
           .then(() => {
+            saveUser(data.name, data.email);
             navigate("/");
           })
           .catch((err) => console.log(err));
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  const saveUser = (name, email) => {
+    const user = { name, email };
+
+    fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          alert("user created successfully done");
+        }
       });
   };
 
