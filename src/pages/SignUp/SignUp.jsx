@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import google from "../../../src/assets/image/google2.png";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const SignUp = () => {
       })
       .catch((error) => {
         console.log(error);
+        toast.error("sign up failed!");
       });
   };
 
@@ -48,7 +50,8 @@ const SignUp = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.acknowledged) {
-          alert("user created successfully done");
+          toast.success("sign in Successfully done!");
+          navigate("/");
         }
       });
   };
