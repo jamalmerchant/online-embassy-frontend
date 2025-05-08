@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import Loading from "../../Shared/Loading/Loading";
+import toast from "react-hot-toast";
 
 const AllUsers = () => {
-  const { data: users, isLoading } = useQuery({
+  const {
+    data: users,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await fetch("http://localhost:3000/users");
@@ -12,6 +17,38 @@ const AllUsers = () => {
       return data;
     },
   });
+
+  const handleMakeAdmin = (id) => {
+    fetch(`http://localhost:3000/users/admin/${id}`, {
+      method: "PUT",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount > 0) {
+          toast.success("Make Admin Successfully Done");
+          refetch();
+        }
+      });
+  };
+
+  const handleDeleteUser = (user) => {
+    const agree = window.confirm(`are you want to delete ${user?.name}?`);
+    if (agree) {
+      fetch(`http://localhost:3000/users/${user?._id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.deletedCount > 0) {
+            toast.success("Deleted successfully done");
+          }
+          refetch();
+        })
+        .catch((error) => {
+          toast.error("delete failed");
+        });
+    }
+  };
 
   if (isLoading) {
     return <Loading></Loading>;
@@ -40,7 +77,10 @@ const AllUsers = () => {
                 <td>{user?.email}</td>
                 <td>
                   {user?.role !== "admin" ? (
-                    <button className="btn btn-xs btn-secondary">
+                    <button
+                      onClick={() => handleMakeAdmin(user._id)}
+                      className="btn btn-xs btn-secondary"
+                    >
                       make Admin
                     </button>
                   ) : (
@@ -48,7 +88,10 @@ const AllUsers = () => {
                   )}
                 </td>
                 <td>
-                  <button className="btn-xs btn btn-outline btn-error">
+                  <button
+                    onClick={() => handleDeleteUser(user)}
+                    className="btn-xs btn btn-outline btn-error"
+                  >
                     Delete
                   </button>
                 </td>

@@ -1,18 +1,22 @@
 import React from "react";
-import MainButton from "../../../components/MainButton/MainButton";
 
-const AppointmentOption = ({ appointmentoption }) => {
-  const { name, slots } = appointmentoption;
+const AppointmentOption = ({ appointmentOption, setAppointments }) => {
+  const { name, slots } = appointmentOption;
   return (
     <div className="card shadow-xl p-6 text-center bg-yellow-500 text-white">
       <div className="card-body py-2">
         <h2 className="text-center text-2xl font-semibold">{name}</h2>
         <p>
-          {" "}
-          {slots.length}
-          {slots.length > 1 ? "Times" : "Time"} Available
+          {slots.length} {slots.length > 1 ? "Times" : "Time"} Available
         </p>
-        <button className="btn btn-outline">Get service</button>
+        {/*=====modal calling==*/}
+        <label
+          htmlFor="booking-modal"
+          className="btn btn-outline"
+          onClick={() => setAppointments(appointmentOption)}
+        >
+          Get Appointment
+        </label>
       </div>
     </div>
   );

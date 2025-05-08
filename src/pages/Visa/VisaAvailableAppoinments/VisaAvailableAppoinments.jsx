@@ -3,24 +3,17 @@ import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import AppointmentOption from "./AppointmentOption";
 import Loading from "../../Shared/Loading/Loading";
+import BookingModal from "../BookingModal/BookingModal";
 
-const VisaAvailableAppoinments = ({ selected }) => {
-  // const [AppoinmentData, setAppointmentData] = useState([]);
-  // useEffect(() => {
-  //   fetch("visaappointments.json")
-  //     .then((res) => res.json())
-  //     .then((data) => setAppointmentData(data));
+const VisaAvailableAppoinments = ({ selectedDate }) => {
+  const [appointments, setAppointments] = useState(null);
+  console.log(appointments);
 
-  // }, []);
-
-  // transtack query
-
-  const { data: appointmentoption, isLoading } = useQuery({
-    queryKey: ["users"],
+  const { data: appointmentOptions, isLoading } = useQuery({
+    queryKey: ["appointmentServices"],
     queryFn: async () => {
-      const res = await fetch("visaappointments.json");
+      const res = await fetch("http://localhost:3000/appointmentServices");
       const data = await res.json();
-
       return data;
     },
   });
@@ -35,17 +28,24 @@ const VisaAvailableAppoinments = ({ selected }) => {
         <h2 className="text-secondary">Visa Appointment</h2>
 
         <h3 className="text-2xl md:text-3xl">
-          Visa Appoinments on: {format(selected, "PP")}
+          Visa Appoinments on: {format(selectedDate, "PP")}
         </h3>
       </div>
       <div className="grid md:grid-cols-3 gap-4">
-        {appointmentoption.map((option) => (
+        {appointmentOptions.map((option) => (
           <AppointmentOption
             key={option._id}
-            appointmentoption={option}
+            appointmentOption={option}
+            setAppointments={setAppointments}
           ></AppointmentOption>
         ))}
       </div>
+      {appointments && (
+        <BookingModal
+          appointments={appointments}
+          selectedDate={selectedDate}
+        ></BookingModal>
+      )}
     </div>
   );
 };

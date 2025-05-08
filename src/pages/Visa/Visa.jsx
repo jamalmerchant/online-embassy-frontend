@@ -7,7 +7,9 @@ const Visa = () => {
   return (
     <div>
       <VisaBanner selected={selected} setSelected={setSelected}></VisaBanner>
-      <VisaAvailableAppoinments selected={selected}></VisaAvailableAppoinments>
+      <VisaAvailableAppoinments
+        selectedDate={selected}
+      ></VisaAvailableAppoinments>
     </div>
   );
 };

@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../pages/Shared/Header/Header";
 import { Link, Outlet } from "react-router-dom";
+import { AuthContext } from "../../Contexts/AuthProvider";
+import useAdmin from "../../hooks/useAdmin";
 
 const DashboardLayout = () => {
+  const { user } = useContext(AuthContext);
+  const [isAdmin] = useAdmin(user?.email);
   return (
     <div>
       <Header></Header>
@@ -13,7 +17,7 @@ const DashboardLayout = () => {
         </div>
         <div class="drawer-side my-20 md:mt-0">
           <label
-            for="dashboard drawer"
+            htmlFor="dashboard drawer"
             aria-label="close sidebar"
             class="drawer-overlay"
           ></label>
@@ -23,16 +27,23 @@ const DashboardLayout = () => {
                 My Appointment
               </Link>
             </li>
-            <li>
-              <Link className="rounded-none mt-2" to="/dashboard/all-users">
-                ALL users
-              </Link>
-            </li>
-            <li>
-              <Link className="rounded-none mt-2" to="/dashboard">
-                Add Service
-              </Link>
-            </li>
+            {isAdmin && (
+              <>
+                <li>
+                  <Link className="rounded-none mt-2" to="/dashboard/all-users">
+                    ALL users
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="rounded-none mt-2"
+                    to="/dashboard/add-service"
+                  >
+                    Add Service
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
