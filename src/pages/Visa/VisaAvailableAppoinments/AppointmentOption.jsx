@@ -1,7 +1,8 @@
 import React from "react";
 
-const AppointmentOption = ({ appointmentOption, setAppointments }) => {
-  const { name, slots } = appointmentOption;
+const AppointmentOption = ({ appointOption, setAppointments }) => {
+  const { name, slots } = appointOption;
+
   return (
     <div className="card shadow-xl p-6 text-center bg-yellow-500 text-white">
       <div className="card-body py-2">
@@ -13,7 +14,7 @@ const AppointmentOption = ({ appointmentOption, setAppointments }) => {
         <label
           htmlFor="booking-modal"
           className="btn btn-outline"
-          onClick={() => setAppointments(appointmentOption)}
+          onClick={() => setAppointments(appointOption)}
         >
           Get Appointment
         </label>

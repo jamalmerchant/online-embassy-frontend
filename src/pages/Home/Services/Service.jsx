@@ -3,20 +3,20 @@ import MainButton from "../../../components/MainButton/MainButton";
 import { Link } from "react-router-dom";
 
 const Service = ({ ServiceData }) => {
-  const { name, description, img } = ServiceData;
+  const { name, des, image } = ServiceData;
   return (
     <div className="card shadow-xl p-6 text-center bg-yellow-500 text-white">
       <figure>
         <img
           className="h-[200px] rounded-sm border-[1px] border-red-700"
-          src={img}
+          src={`data:image/jpeg;base64,${image}`}
           alt=""
         />
       </figure>
 
       <div className="card-body py-2">
         <h2 className="text-center text-2xl font-semibold">{name}</h2>
-        <p className="text-justify">{description}</p>
+        <p className="text-justify">{des}</p>
 
         <MainButton>
           {" "}

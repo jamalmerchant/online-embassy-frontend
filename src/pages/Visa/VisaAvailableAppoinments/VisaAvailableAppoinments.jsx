@@ -6,13 +6,21 @@ import Loading from "../../Shared/Loading/Loading";
 import BookingModal from "../BookingModal/BookingModal";
 
 const VisaAvailableAppoinments = ({ selectedDate }) => {
+  //
+  const date = format(selectedDate, "PP");
   const [appointments, setAppointments] = useState(null);
   console.log(appointments);
 
-  const { data: appointmentOptions, isLoading } = useQuery({
-    queryKey: ["appointmentServices"],
+  const {
+    data: appointmentOptions,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["appointmentItemsServices", date],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/appointmentServices");
+      const res = await fetch(
+        `http://localhost:3000/appointmentItemsServices?date=${date}`
+      );
       const data = await res.json();
       return data;
     },
@@ -31,19 +39,23 @@ const VisaAvailableAppoinments = ({ selectedDate }) => {
           Visa Appoinments on: {format(selectedDate, "PP")}
         </h3>
       </div>
+      {/*========appointment option =====*/}
       <div className="grid md:grid-cols-3 gap-4">
         {appointmentOptions.map((option) => (
           <AppointmentOption
             key={option._id}
-            appointmentOption={option}
+            appointOption={option}
             setAppointments={setAppointments}
           ></AppointmentOption>
         ))}
       </div>
+      {/*========booking modal=====*/}
       {appointments && (
         <BookingModal
+          setAppointments={setAppointments}
           appointments={appointments}
           selectedDate={selectedDate}
+          refetch={refetch}
         ></BookingModal>
       )}
     </div>
